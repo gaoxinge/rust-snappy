@@ -51,7 +51,7 @@ fn build_snappy() {
         .env("CMAKE_BUILD_TYPE", "static")
         .build();
     println!("cargo:rustc-link-lib=static=snappy");
-    println!("cargo:rustc-link-search={}", out_dir.join("lib").to_string_lossy());
+    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").to_string_lossy());
     println!("cargo:root={}", out_dir.to_string_lossy());
     configure_stdcpp();
 }
