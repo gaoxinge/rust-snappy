@@ -45,13 +45,13 @@ fn build_snappy() {
         cflags.push(arg);
         cflags.push(" ");
     }
-    cmake::Config::new("snappy")
+    let output = cmake::Config::new("snappy")
         .env("CC", cc.path())
         .env("CFLAGS", cflags)
         .env("CMAKE_BUILD_TYPE", "static")
         .build();
     println!("cargo:rustc-link-lib=static=snappy");
-    println!("cargo:rustc-link-search=native={}", out_dir.join("lib").to_string_lossy());
+    println!("cargo:rustc-link-search=native={}", output.display());
     println!("cargo:root={}", out_dir.to_string_lossy());
 }
 
