@@ -5,6 +5,7 @@ use std::env;
 use std::fs;
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 fn main() {
     let want_static = env::var("SNAPPY_SYS_STATIC").unwrap_or(String::new()) == "1";
@@ -48,10 +49,13 @@ fn build_snappy() {
     let output = cmake::Config::new("snappy")
         .env("CC", cc.path())
         .env("CFLAGS", cflags)
-        .env("CMAKE_BUILD_TYPE", "static")
+        .static_crt(true)
         .build();
+    Command::new("make").current_dir(&output).status().unwrap();
     println!("cargo:rustc-link-lib=static=snappy");
-    println!("cargo:rustc-link-search=native={}", output.display());
+    // On some machines, we see lib, on other machines, we see lib64. Add both:
+    println!("cargo:rustc-link-search=native={}/lib", output.display());
+    println!("cargo:rustc-link-search=native={}/lib64", output.display());
     println!("cargo:root={}", out_dir.to_string_lossy());
 }
 
