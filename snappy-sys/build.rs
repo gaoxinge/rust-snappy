@@ -39,7 +39,7 @@ fn configure_snappy(want_static: bool) -> bool {
 fn build_snappy() {
     let out_dir = PathBuf::from(&env::var("OUT_DIR").unwrap());
 
-    let cc = cc::Build::new().get_compiler();
+    let cc = cc::Build::new().cpp(true).get_compiler();
     let mut cflags = OsString::new();
     for arg in cc.args() {
         cflags.push(arg);
@@ -53,7 +53,6 @@ fn build_snappy() {
     println!("cargo:rustc-link-lib=static=snappy");
     println!("cargo:rustc-link-search=native={}", out_dir.join("lib").to_string_lossy());
     println!("cargo:root={}", out_dir.to_string_lossy());
-    configure_stdcpp();
 }
 
 fn configure_stdcpp() {
