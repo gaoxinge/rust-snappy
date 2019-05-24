@@ -57,6 +57,7 @@ fn build_snappy() {
     println!("cargo:rustc-link-search=native={}/lib", output.display());
     println!("cargo:rustc-link-search=native={}/lib64", output.display());
     println!("cargo:root={}", out_dir.to_string_lossy());
+    configure_stdcpp();
 }
 
 fn configure_stdcpp() {
