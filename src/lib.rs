@@ -5,9 +5,7 @@ use libc::size_t;
 use snappy_sys::*;
 
 pub fn validate_compressed_buffer(src: &[u8]) -> bool {
-    unsafe {
-        snappy_validate_compressed_buffer(src.as_ptr(), src.len() as size_t) == 0
-    }
+    unsafe { snappy_validate_compressed_buffer(src.as_ptr(), src.len() as size_t) == 0 }
 }
 
 pub fn compress(src: &[u8]) -> Vec<u8> {
@@ -58,8 +56,8 @@ pub fn uncompress_to(src: &[u8], dst: &mut Vec<u8>) -> Result<usize, ()> {
 
 #[cfg(test)]
 mod tests {
-    use std::str;
     use super::*;
+    use std::str;
 
     #[test]
     fn valid() {
@@ -90,7 +88,9 @@ mod tests {
     #[test]
     fn uncompress_to_appends() {
         // "This is test"
-        let compressed = &[12, 44, 84, 104, 105, 115, 32, 105, 115, 32, 116, 101, 115, 116];
+        let compressed = &[
+            12, 44, 84, 104, 105, 115, 32, 105, 115, 32, 116, 101, 115, 116,
+        ];
 
         let mut out = vec![b'a', b'b', b'c', b'>'];
         uncompress_to(compressed, &mut out).unwrap();

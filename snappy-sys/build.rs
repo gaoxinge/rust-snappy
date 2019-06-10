@@ -29,9 +29,16 @@ fn main() {
 }
 
 fn configure_stdcpp() {
-    // From: https://github.com/alexcrichton/gcc-rs/blob/master/src/lib.rs
+    // From: https://github.com/alexcrichton/cc-rs/blob/master/src/lib.rs
     let target = env::var("TARGET").unwrap();
-    let cpp = if target.contains("darwin") { "c++" } else { "stdc++" };
-    println!("cargo:rustc-link-lib={}", cpp);
+    let cpp = if target.contains("darwin") {
+        Some("c++")
+    } else if target.contains("windows") {
+        None
+    } else {
+        Some("stdc++")
+    };
+    if let Some(cpp) = cpp {
+        println!("cargo:rustc-link-lib={}", cpp);
+    }
 }
-
