@@ -11,7 +11,7 @@ fn main() {
     let dst = Config::new("snappy").build_target("snappy").build();
     let mut build = dst.join("build");
     let stub = build.join("snappy-stubs-public.h");
-    if cfg!(target_os = "windows") {
+    if cfg!(target_os = "windows") && cfg!(target_env = "msvc") {
         let profile = match &*env::var("PROFILE").unwrap_or("debug".to_owned()) {
             "bench" | "release" => "Release",
             _ => "Debug",
@@ -22,7 +22,7 @@ fn main() {
     println!("cargo:rustc-link-lib=static=snappy");
     println!("cargo:rustc-link-search=native={}", build.display());
     fs::copy(src.join("snappy.h"), build.join("snappy.h")).unwrap();
-    if cfg!(target_os = "windows") {
+    if cfg!(target_os = "windows") && cfg!(target_env = "msvc") {
         fs::copy(stub, build.join("snappy-stubs-public.h")).unwrap();
     }
     configure_stdcpp();
