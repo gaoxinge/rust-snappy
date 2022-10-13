@@ -33,7 +33,7 @@ fn configure_stdcpp() {
     let target = env::var("TARGET").unwrap();
     let cpp = if target.contains("darwin") {
         Some("c++")
-    } else if target.contains("windows") {
+    } else if target.contains("windows") && target.contains("msvc") {
         None
     } else {
         Some("stdc++")
